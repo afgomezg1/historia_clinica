@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+from mongoengine import connect
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,13 +75,27 @@ WSGI_APPLICATION = 'historia_clinica.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
+# Lee la URI de entorno o ponla directamente para desarrollo:
+MONGO_USER     = os.getenv("MONGO_INITDB_ROOT_USERNAME", "afgomezg1")
+MONGO_PASS     = os.getenv("MONGO_INITDB_ROOT_PASSWORD", "password")
+MONGO_HOST     = os.getenv("MONGO_HOST", "localhost")
+MONGO_PORT     = os.getenv("MONGO_PORT", "27017")
+MONGO_DB_NAME  = os.getenv("MONGO_DB_NAME", "historia_clinica_db")
+
+MONGO_URI = (
+    f"mongodb://{MONGO_USER}:{MONGO_PASS}"
+    f"@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB_NAME}"
+)
+
+# Conecta MongoEngine al arrancar Django
+connect(host=MONGO_URI)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -123,3 +139,12 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PATH_API_GATEWAY = (
+    "http://"
+    + os.environ.get("KONG_HOST", "10.128.0.81")
+    + ":"
+    + os.environ.get("KONG_PORT", "8000")
+)
+# Ejemplo de uso posterior:
+# PATH_VAR    = PATH_API_GATEWAY + "/internal/assignments/"
