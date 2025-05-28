@@ -12,6 +12,7 @@ class Diagnosis(Document):
     meta = {
         "collection": "diagnoses",
         "indexes": ["patient_id"],
+        "auto_create_index": False
     }
 
 # Embedded schemas for the report
@@ -32,4 +33,5 @@ class MonthlyReport(Document):
     meta = {
         "collection": "monthly_reports",
         "indexes": ["period_start"],
+        "auto_create_index": False
     }
