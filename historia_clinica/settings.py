@@ -83,20 +83,20 @@ WSGI_APPLICATION = 'historia_clinica.wsgi.application'
 #     }
 # }
 
-# Lee la URI de entorno o ponla directamente para desarrollo:
-MONGO_USER     = os.getenv("MONGO_INITDB_ROOT_USERNAME", "afgomezg1")
-MONGO_PASS     = os.getenv("MONGO_INITDB_ROOT_PASSWORD", "password")
-MONGO_HOST     = os.getenv("MONGO_HOST", "10.128.0.83")
-MONGO_PORT     = os.getenv("MONGO_PORT", "27017")
-MONGO_DB_NAME  = os.getenv("MONGO_DB_NAME", "historia_clinica_db")
+MONGO_USER    = os.getenv("MONGO_INITDB_ROOT_USERNAME", "afgomezg1")
+MONGO_PASS    = os.getenv("MONGO_INITDB_ROOT_PASSWORD", "password")
+MONGO_HOST    = os.getenv("MONGO_HOST", "10.128.0.83")
+MONGO_PORT    = int(os.getenv("MONGO_PORT", "27017"))
+MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "historia_clinica_db")
 
-MONGO_URI = (
-    f"mongodb://{MONGO_USER}:{MONGO_PASS}"
-    f"@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB_NAME}"
+connect(
+    db=MONGO_DB_NAME,
+    username=MONGO_USER,
+    password=MONGO_PASS,
+    host=MONGO_HOST,
+    port=MONGO_PORT,
+    authentication_source='admin'
 )
-
-# Conecta MongoEngine al arrancar Django
-connect(host=MONGO_URI)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
