@@ -1,20 +1,23 @@
 import json
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Diagnosis
 from .services.services_report import fetch_report
 
 def monthly_report(request):
     # period comes in as “YYYY-MM-DD” or None
-    period = request.GET.get("period")  
+    period = request.GET.get("period")
     data = fetch_report(period)
     return JsonResponse({"period": period, "cities": data}, safe=False)
 
 @require_POST
+@csrf_exempt
 def bulk_create_diagnoses(request):
     """
     POST /historia-clinica/internal/diagnoses/bulk_create/
+    Accepts a JSON list of Diagnosis fields and inserts them all.
     """
     try:
         payload = json.loads(request.body)

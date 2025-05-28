@@ -70,11 +70,12 @@ class Command(BaseCommand):
             CityMetrics(city=cty, doctors=dlist)
             for cty, dlist in city_buckets.items()
         ]
-        MonthlyReport.objects.update_one(
-            {"period_start": period_start},
-            {"set__cities": cities_list},
+
+        MonthlyReport.objects(period_start=period_start).update_one(
+            set__cities=cities_list,
             upsert=True
         )
+
         self.stdout.write(self.style.SUCCESS(
             f"MonthlyReport for {period_start.date()} upserted ({len(cities_list)} cities)."
         ))
