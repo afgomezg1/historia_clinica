@@ -1,4 +1,4 @@
-from logic.logic_report import get_monthly_report
+from ..logic.logic_report import get_monthly_report
 
 def fetch_report(period=None):
     cities = get_monthly_report(period)
