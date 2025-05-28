@@ -14,12 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from core.views import status_check, spoofed_status 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('status/', status_check, name='status_check'),
-    path('spoofed-status/', spoofed_status, name='spoofed_status'), # Endpoint para simular spoofing
+    path('spoofed-status/', spoofed_status, name='spoofed_status'),
+    path('historia-clinica/', include('informacion_diagnostica.urls')),
 
 ]

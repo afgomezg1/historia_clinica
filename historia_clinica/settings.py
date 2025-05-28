@@ -141,11 +141,12 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# at bottom of file, after MONGO setup:
 PATH_API_GATEWAY = (
     "http://"
     + os.environ.get("KONG_HOST", "10.128.0.81")
     + ":"
     + os.environ.get("KONG_PORT", "8000")
 )
-# Ejemplo de uso posterior:
-# PATH_VAR    = PATH_API_GATEWAY + "/internal/assignments/"
+# where to fetch assignments from Médico:
+PERSONAL_MEDICO_INTERNAL = PATH_API_GATEWAY + "/personal-medico/internal/assignments/"
