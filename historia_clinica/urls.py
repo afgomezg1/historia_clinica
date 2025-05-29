@@ -19,8 +19,8 @@ from core.views import status_check, spoofed_status
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/status', status_check, name='status_check'),
-    path('/spoofed-status', spoofed_status, name='spoofed_status'),
+    path('status/', status_check, name='status_check'),
+    path('spoofed-status/', spoofed_status, name='spoofed_status'),
     path('historia-clinica/', include('informacion_diagnostica.urls')),
 
 ]
