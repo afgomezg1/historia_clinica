@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <title>Reporte Mensual - {{ period }}</title>
+{% endblock %}
+
+{% block content %}
+  <h2 class="my-4">Reporte Mensual: {{ period }}</h2>
+
+  <!-- Period selector -->
+  <form method="get" class="form-inline mb-4">
+    <label for="period" class="mr-2">Seleccione periodo:</label>
+    <select name="period" id="period"
+            class="form-control mr-2"
+            onchange="this.form.submit()">
+      {% for p in periods %}
+        <option value="{{ p }}" {% if p == period %}selected{% endif %}>
+          {{ p }}
+        </option>
+      {% endfor %}
+    </select>
+    <noscript><button type="submit" class="btn btn-primary">Ver</button></noscript>
+  </form>
+
+  {% if not cities %}
+    <div class="alert alert-info">
+      No hay datos para el periodo seleccionado.
+    </div>
+  {% endif %}
+
+  <!-- Report by city -->
+  {% for city in cities %}
+    <div class="card mb-4">
+      <div class="card-header bg-secondary text-white">
+        Ciudad: {{ city.city }}
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+          <thead class="thead-light">
+            <tr>
+              <th>Doctor ID</th>
+              <th>Nombre</th>
+              <th>Eficiencia (%)</th>
+              <th>Pending</th>
+              <th>Refractaria</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for d in city.doctors %}
+              <tr>
+                <td>{{ d.doctor_id }}</td>
+                <td>{{ d.doctor_name }}</td>
+                <td>{{ d.pct_efficiency|floatformat:2 }}</td>
+                <td>{{ d.cnt_pending }}</td>
+                <td>{{ d.cnt_refractory }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}
